@@ -3,29 +3,29 @@
 #include "Mystring.h"
 
 // No-args constructor
-Mystring::Mystring() 
+Mystring::Mystring()
     : str{nullptr} {
     str = new char[1];
     *str = '\0';
 }
 
 // Overloaded constructor
-Mystring::Mystring(const char *s) 
+Mystring::Mystring(const char *s)
     : str {nullptr} {
-        if (s==nullptr) {
-            str = new char[1];
-            *str = '\0';
-        } else {
-            str = new char[std::strlen(s)+1];
-            std::strcpy(str, s);
-        }
+    if (s == nullptr) {
+        str = new char[1];
+        *str = '\0';
+    } else {
+        str = new char[std::strlen(s) +1];
+        std::strcpy(str, s);
+    }
 }
 
 // Copy constructor
-Mystring::Mystring(const Mystring &source) 
+Mystring::Mystring(const Mystring &source)
     : str{nullptr} {
-        str = new char[std::strlen(source.str) + 1];
-        std::strcpy(str, source.str);
+    str = new char[std::strlen(source.str) + 1];
+    std::strcpy(str, source.str);
 }
 
 // Destructor
@@ -51,8 +51,12 @@ void Mystring::display() const {
 }
 
 // getters
- int Mystring::get_length() const { return strlen(str); }
- const char *Mystring::get_str() const { return str; }
+int Mystring::get_length() const {
+    return strlen(str);
+}
+const char *Mystring::get_str() const {
+    return str;
+}
 
 
 

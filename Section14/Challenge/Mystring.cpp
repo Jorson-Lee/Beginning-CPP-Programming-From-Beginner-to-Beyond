@@ -1,52 +1,53 @@
+#include <cctype>
 #include <iostream>
 #include <cstring>
 #include "Mystring.h"
 
- // No-args constructor
-Mystring::Mystring() 
+// No-args constructor
+Mystring::Mystring()
     : str{nullptr} {
     str = new char[1];
     *str = '\0';
 }
 
 // Overloaded constructor
-Mystring::Mystring(const char *s) 
+Mystring::Mystring(const char *s)
     : str {nullptr} {
-        if (s==nullptr) {
-            str = new char[1];
-            *str = '\0';
-        } else {
-            str = new char[strlen(s)+1];
-            strcpy(str, s);
-        }
+    if (s == nullptr) {
+        str = new char[1];
+        *str = '\0';
+    } else {
+        str = new char[strlen(s) +1];
+        strcpy(str, s);
+    }
 }
 
 // Copy constructor
-Mystring::Mystring(const Mystring &source) 
+Mystring::Mystring(const Mystring &source)
     : str{nullptr} {
-        str = new char[strlen(source.str)+ 1];
-        strcpy(str, source.str);
- //       std::cout << "Copy constructor used" << std::endl;
+    str = new char[strlen(source.str) + 1];
+    strcpy(str, source.str);
+//       std::cout << "Copy constructor used" << std::endl;
 
 }
 
 // Move constructor
-Mystring::Mystring( Mystring &&source) 
-    :str(source.str) {
-        source.str = nullptr;
+Mystring::Mystring(Mystring &&source)
+    : str(source.str) {
+    source.str = nullptr;
 //        std::cout << "Move constructor used" << std::endl;
 }
 
- // Destructor
+// Destructor
 Mystring::~Mystring() {
     delete [] str;
 }
 
- // Copy assignment
+// Copy assignment
 Mystring &Mystring::operator=(const Mystring &rhs) {
 //    std::cout << "Using copy assignment" << std::endl;
 
-    if (this == &rhs) 
+    if (this == &rhs)
         return *this;
     delete [] str;
     str = new char[strlen(rhs.str) + 1];
@@ -55,9 +56,9 @@ Mystring &Mystring::operator=(const Mystring &rhs) {
 }
 
 // Move assignment
-Mystring &Mystring::operator=( Mystring &&rhs) {
- //   std::cout << "Using move assignment" << std::endl;
-    if (this == &rhs) 
+Mystring &Mystring::operator=(Mystring &&rhs) {
+//   std::cout << "Using move assignment" << std::endl;
+    if (this == &rhs)
         return *this;
     delete [] str;
     str = rhs.str;
@@ -71,9 +72,13 @@ void Mystring::display() const {
     std::cout << str << " : " << get_length() << std::endl;
 }
 
- // getters
- int Mystring::get_length() const { return strlen(str); }
- const char *Mystring::get_str() const { return str; }
+// getters
+int Mystring::get_length() const {
+    return strlen(str);
+}
+const char *Mystring::get_str() const {
+    return str;
+}
 
 // overloaded insertion operator
 std::ostream &operator<<(std::ostream &os, const Mystring &rhs) {
@@ -90,3 +95,62 @@ std::istream &operator>>(std::istream &in, Mystring &rhs) {
     return in;
 }
 
+Mystring Mystring::operator-()const {
+    char *buff = new char[strlen(str) +1];
+    strcpy(buff, str);
+    for (size_t i; i < std::strlen(str); i++) {
+        buff[i] = tolower(buff[i]);
+    }
+    Mystring temp{buff};
+    delete[] buff;
+    return temp;
+}
+
+bool Mystring::operator==(const Mystring &rhs)const {
+    return strcmp(str, rhs.str) == 0;
+}
+
+bool Mystring::operator!=(const Mystring &rhs)const {
+    return !(strcmp(str, rhs.str) != 0);
+}
+
+bool Mystring::operator<(const Mystring &rhs)const {
+    return strcmp(str, rhs.str) < 0;
+}
+
+bool Mystring::operator>(const Mystring &rhs)const {
+    return !(strcmp(str, rhs.str) > 0);
+}
+
+Mystring Mystring::operator+(const Mystring &rhs) {
+    char *buff = new char[std::strlen(str) + std::strlen(rhs.str) +1];
+    std::strcpy(buff, str);
+    std::strcat(buff, rhs.str);
+    Mystring temp{buff};
+    delete[] buff;
+    return temp;
+}
+
+Mystring &Mystring::operator+=(const Mystring &rhs) {
+    *this = *this + rhs;
+    return *this;
+}
+
+Mystring Mystring::operator*(int times)const {
+    char *buff = new char[strlen(str) * 3 + 1];
+    while (times > 0) {
+        strcat(buff, str);
+        times--;
+    }
+    /*
+    or use pre-determined "+"
+    while(times>0){
+        buff = buff + *this;
+        return buff;
+    }
+    */
+
+    Mystring temp{buff};
+    delete[] buff;
+    return temp;
+}
